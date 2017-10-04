@@ -1,2 +1,0 @@
-verilog work "ipcore_dir/clock_gen.v"
-verilog work "top.v"
