@@ -1,0 +1,362 @@
+Release 14.7 - xst P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.14 secs
+ 
+--> Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.14 secs
+ 
+--> Reading design: top.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "top.prj"
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "top"
+Output Format                      : NGC
+Target Device                      : xc6slx9-3-tqg144
+
+---- Source Options
+Top Module Name                    : top
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Shift Register Extraction          : YES
+ROM Style                          : Auto
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Shift Register Minimum Size        : 2
+Use DSP Block                      : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+LUT Combining                      : Auto
+Reduce Control Sets                : Auto
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 16
+Register Duplication               : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Auto
+Use Synchronous Set                : Auto
+Use Synchronous Reset              : Auto
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Power Reduction                    : NO
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+DSP48 Utilization Ratio            : 100
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+---- Other Options
+Cores Search Directories           : {"ipcore_dir"  }
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Analyzing Verilog file "D:\ArchLab\ProjectCPU\ipcore_dir\clock_gen.v" into library work
+Parsing module <clock_gen>.
+Analyzing Verilog file "D:\ArchLab\ProjectCPU\top.v" into library work
+Parsing module <top>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating module <top>.
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\top.v" Line 77: Assignment to o_SEGLatc ignored, since the identifier is never used
+
+Elaborating module <clock_gen>.
+
+Elaborating module <IBUFG>.
+
+Elaborating module <PLL_BASE(BANDWIDTH="OPTIMIZED",CLK_FEEDBACK="CLKFBOUT",COMPENSATION="SYSTEM_SYNCHRONOUS",DIVCLK_DIVIDE=1,CLKFBOUT_MULT=8,CLKFBOUT_PHASE=0.0,CLKOUT0_DIVIDE=80,CLKOUT0_PHASE=0.0,CLKOUT0_DUTY_CYCLE=0.5,CLKOUT1_DIVIDE=20,CLKOUT1_PHASE=0.0,CLKOUT1_DUTY_CYCLE=0.5,CLKOUT2_DIVIDE=8,CLKOUT2_PHASE=0.0,CLKOUT2_DUTY_CYCLE=0.5,CLKOUT3_DIVIDE=4,CLKOUT3_PHASE=0.0,CLKOUT3_DUTY_CYCLE=0.5,CLKIN_PERIOD=20.0,REF_JITTER=0.01)>.
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\ipcore_dir\clock_gen.v" Line 129: Assignment to clkout4_unused ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\ipcore_dir\clock_gen.v" Line 130: Assignment to clkout5_unused ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\ipcore_dir\clock_gen.v" Line 131: Assignment to locked_unused ignored, since the identifier is never used
+
+Elaborating module <BUFG>.
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\top.v" Line 129: Assignment to o_CLK_5 ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\top.v" Line 130: Assignment to o_CLK_20 ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\top.v" Line 131: Assignment to o_CLK_50 ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:\ArchLab\ProjectCPU\top.v" Line 132: Assignment to o_CLK_100 ignored, since the identifier is never used
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <top>.
+    Related source file is "D:\ArchLab\ProjectCPU\top.v".
+WARNING:Xst:647 - Input <i_DIPData> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_Eth_INT> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_SW1> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_SW2> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_SW3> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_SW4> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_RXD1> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_RXD2> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_MMC_DO> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <i_SYS_RESET> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+INFO:Xst:3210 - "D:\ArchLab\ProjectCPU\top.v" line 125: Output port <o_CLK_5> of the instance <_clock_gen> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "D:\ArchLab\ProjectCPU\top.v" line 125: Output port <o_CLK_20> of the instance <_clock_gen> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "D:\ArchLab\ProjectCPU\top.v" line 125: Output port <o_CLK_50> of the instance <_clock_gen> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "D:\ArchLab\ProjectCPU\top.v" line 125: Output port <o_CLK_100> of the instance <_clock_gen> is unconnected or connected to loadless signal.
+Always blocking tristate driving signal <io_USB_IFCLK> is removed.
+Always blocking tristate driving signal <io_Data<7>> is removed.
+Always blocking tristate driving signal <io_Data<6>> is removed.
+Always blocking tristate driving signal <io_Data<5>> is removed.
+Always blocking tristate driving signal <io_Data<4>> is removed.
+Always blocking tristate driving signal <io_Data<3>> is removed.
+Always blocking tristate driving signal <io_Data<2>> is removed.
+Always blocking tristate driving signal <io_Data<1>> is removed.
+Always blocking tristate driving signal <io_Data<0>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<9>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<8>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<7>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<6>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<5>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<4>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<3>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<2>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<1>> is removed.
+Always blocking tristate driving signal <io_MuxEthUSB<0>> is removed.
+    Found 1-bit tristate buffer for signal <o_PSCLK> created at line 70
+    Found 1-bit tristate buffer for signal <o_LEDData> created at line 71
+    Found 1-bit tristate buffer for signal <o_LEDLatch> created at line 72
+    Found 1-bit tristate buffer for signal <o_DIPLatch> created at line 75
+    Found 1-bit tristate buffer for signal <o_MMC_SCK> created at line 81
+    Found 1-bit tristate buffer for signal <o_MMC_DI> created at line 83
+    Found 1-bit tristate buffer for signal <o_MMC_CS> created at line 84
+    Found 1-bit tristate buffer for signal <o_VGA_blue0> created at line 86
+    Found 1-bit tristate buffer for signal <o_VGA_blue1> created at line 87
+    Found 1-bit tristate buffer for signal <o_VGA_green0> created at line 88
+    Found 1-bit tristate buffer for signal <o_VGA_green1> created at line 89
+    Found 1-bit tristate buffer for signal <o_VGA_red0> created at line 90
+    Found 1-bit tristate buffer for signal <o_VGA_red1> created at line 91
+    Found 1-bit tristate buffer for signal <o_VGA_vsync> created at line 92
+    Found 1-bit tristate buffer for signal <o_VGA_hsync> created at line 93
+    Found 1-bit tristate buffer for signal <o_Eth_RST> created at line 95
+    Found 1-bit tristate buffer for signal <o_Eth_CS> created at line 97
+    Found 1-bit tristate buffer for signal <o_Eth_RD> created at line 98
+    Found 1-bit tristate buffer for signal <o_Eth_WR> created at line 99
+    Found 1-bit tristate buffer for signal <o_USB_SLOE> created at line 100
+    Found 1-bit tristate buffer for signal <o_USB_SLRD> created at line 102
+    Found 1-bit tristate buffer for signal <o_USB_SLWR> created at line 103
+    Found 1-bit tristate buffer for signal <o_TXD1> created at line 107
+    Found 1-bit tristate buffer for signal <o_TXD2> created at line 108
+    Found 1-bit tristate buffer for signal <o_SEGData> created at line 112
+    Found 1-bit tristate buffer for signal <o_SEGLatch> created at line 113
+    Found 1-bit tristate buffer for signal <o_LCDData> created at line 115
+    Found 1-bit tristate buffer for signal <o_LCDLatch> created at line 116
+    Summary:
+	inferred  28 Tristate(s).
+Unit <top> synthesized.
+
+Synthesizing Unit <clock_gen>.
+    Related source file is "D:\ArchLab\ProjectCPU\ipcore_dir\clock_gen.v".
+    Summary:
+	no macro.
+Unit <clock_gen> synthesized.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Tristates                                            : 28
+ 1-bit tristate buffer                                 : 28
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Found no macro
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+INFO:Xst:1901 - Instance _clock_gen/pll_base_inst in unit _clock_gen/pll_base_inst of type PLL_BASE has been replaced by PLL_ADV
+
+Optimizing unit <top> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block top, actual ratio is 0.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Found no macro
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Design Summary                             *
+=========================================================================
+
+Top Level Output File Name         : top.ngc
+
+Primitive and Black Box Usage:
+------------------------------
+# BELS                             : 2
+#      GND                         : 1
+#      VCC                         : 1
+# Clock Buffers                    : 5
+#      BUFG                        : 5
+# IO Buffers                       : 29
+#      IBUFG                       : 1
+#      OBUFT                       : 28
+# Others                           : 1
+#      PLL_ADV                     : 1
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx9tqg144-3 
+
+
+Slice Logic Utilization: 
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:      0
+   Number with an unused Flip Flop:       0  out of      0         
+   Number with an unused LUT:             0  out of      0         
+   Number of fully used LUT-FF pairs:     0  out of      0         
+   Number of unique control sets:         0
+
+IO Utilization: 
+ Number of IOs:                          58
+ Number of bonded IOBs:                  29  out of    102    28%  
+
+Specific Feature Utilization:
+ Number of BUFG/BUFGCTRLs:                5  out of     16    31%  
+ Number of PLL_ADVs:                      1  out of      2    50%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+Timing Report
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+No clock signals found in this design
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -3
+
+   Minimum period: No path found
+   Minimum input arrival time before clock: No path found
+   Maximum output required time after clock: No path found
+   Maximum combinational path delay: No path found
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+
+Cross Clock Domains Report:
+--------------------------
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 6.00 secs
+Total CPU time to Xst completion: 6.15 secs
+ 
+--> 
+
+Total memory usage is 279020 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :   18 (   0 filtered)
+Number of infos    :    5 (   0 filtered)
+
