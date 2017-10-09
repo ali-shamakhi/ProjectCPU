@@ -63,13 +63,19 @@ module top(
     input i_SYS_RESET
     );
 
+wire o_CLK_5;
+wire o_CLK_20;
+wire o_CLK_50;
+wire o_CLK_100;
+
 //////////////////////////////////////
 
 // all unused output to Z
 
-assign o_PSCLK = 1'bz;
-assign o_LEDData = 1'bz;
-assign o_LEDLatch = 1'bz;
+//assign o_PSCLK = 1'bz;
+assign o_PSCLK = o_CLK_5;
+//assign o_LEDData = 1'bz;
+//assign o_LEDLatch = 1'bz;
 
 
 assign o_DIPLatch = 1'bz;
@@ -117,11 +123,6 @@ assign o_LCDLatch = 1'bz;
 
 //////////////////////////////////////
 
-	wire o_CLK_5;
-   wire o_CLK_20;
-   wire o_CLK_50;
-   wire o_CLK_100;
-
   clock_gen _clock_gen
    (// Clock in ports
     .i_CLK_50(i_CLK),      // IN
@@ -130,5 +131,7 @@ assign o_LCDLatch = 1'bz;
     .o_CLK_20(o_CLK_20),     // OUT
     .o_CLK_50(o_CLK_50),     // OUT
     .o_CLK_100(o_CLK_100));    // OUT
+	 
+	 
 
 endmodule
