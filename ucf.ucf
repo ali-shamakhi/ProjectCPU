@@ -63,53 +63,55 @@ NET io_Data[5]		LOC = P51; # Eth_D5 , USB_FD5
 NET io_Data[6]		LOC = P50; # Eth_D6 , USB_FD6
 NET io_Data[7]		LOC = P48; # Eth_D7 , USB_FD7
 
-NET o_PS2_CLK1		LOC = P62;
-NET io_PS2_Data1	LOC = P61;
-
-NET o_PS2_CLK2		LOC = P67;
-NET io_PS2_Data2	LOC = P66;
-
-NET i_IR_Data		LOC = P69;
-
-NET "io_SDR_DQ[0]"	LOC = P116;
-NET "io_SDR_DQ[1]"	LOC = P115;
-NET "io_SDR_DQ[2]"	LOC = P114;
-NET "io_SDR_DQ[3]"	LOC = P112;
-NET "io_SDR_DQ[4]"	LOC = P111;
-NET "io_SDR_DQ[5]"	LOC = P105;
-NET "io_SDR_DQ[6]"	LOC = P104;
-NET "io_SDR_DQ[7]"	LOC = P102;
-NET "io_SDR_DQ[8]"	LOC = P117;
-NET "io_SDR_DQ[9]"	LOC = P118;
-NET "io_SDR_DQ[10]"	LOC = P119;
-NET "io_SDR_DQ[11]"	LOC = P120;
-NET "io_SDR_DQ[12]"	LOC = P121;
-NET "io_SDR_DQ[13]"	LOC = P123;
-NET "io_SDR_DQ[14]"	LOC = P124;
-NET "io_SDR_DQ[15]"	LOC = P126;
-
-NET "o_SDR_A[0]"	LOC = P92;
-NET "o_SDR_A[1]"	LOC = P88;
-NET "o_SDR_A[2]"	LOC = P87;
-NET "o_SDR_A[3]"	LOC = P85;
-NET "o_SDR_A[4]"	LOC = P74;
-NET "o_SDR_A[5]"	LOC = P75;
-NET "o_SDR_A[6]"	LOC = P78;
-NET "o_SDR_A[7]"	LOC = P79;
-NET "o_SDR_A[8]"	LOC = P80;
-NET "o_SDR_A[9]"	LOC = P81;
-NET "o_SDR_A[10]"	LOC = P93;
-NET "o_SDR_A[11]"	LOC = P82;
-NET "o_SDR_A[12]"	LOC = P83;
-NET "o_SDR_BA[0]"	LOC = P95; # o_SDR_A[13]
-NET "o_SDR_BA[1]"	LOC = P94; # o_SDR_A[14]
-
-NET "o_SDR_CLK"		LOC = P84;
-NET "o_SDR_CSB"		LOC = P97;
-NET "o_SDR_RASn"	LOC = P98;
-NET "o_SDR_CASn"	LOC = P99;
-NET "o_SDR_WEn"		LOC = P100;
-NET "o_SDR_DQM"		LOC = P101;
+#NET o_PS2_CLK1		LOC = P62;
+#NET io_PS2_Data1	LOC = P61;
+#
+#NET o_PS2_CLK2		LOC = P67;
+#NET io_PS2_Data2	LOC = P66;
+#
+#NET i_IR_Data		LOC = P69;
+#
+#NET "io_SDR_DQ[0]"	LOC = P116;
+#NET "io_SDR_DQ[1]"	LOC = P115;
+#NET "io_SDR_DQ[2]"	LOC = P114;
+#NET "io_SDR_DQ[3]"	LOC = P112;
+#NET "io_SDR_DQ[4]"	LOC = P111;
+#NET "io_SDR_DQ[5]"	LOC = P105;
+#NET "io_SDR_DQ[6]"	LOC = P104;
+#NET "io_SDR_DQ[7]"	LOC = P102;
+#NET "io_SDR_DQ[8]"	LOC = P117;
+#NET "io_SDR_DQ[9]"	LOC = P118;
+#NET "io_SDR_DQ[10]"	LOC = P119;
+#NET "io_SDR_DQ[11]"	LOC = P120;
+#NET "io_SDR_DQ[12]"	LOC = P121;
+#NET "io_SDR_DQ[13]"	LOC = P123;
+#NET "io_SDR_DQ[14]"	LOC = P124;
+#NET "io_SDR_DQ[15]"	LOC = P126;
+#
+#NET "o_SDR_A[0]"	LOC = P92;
+#NET "o_SDR_A[1]"	LOC = P88;
+#NET "o_SDR_A[2]"	LOC = P87;
+#NET "o_SDR_A[3]"	LOC = P85;
+#NET "o_SDR_A[4]"	LOC = P74;
+#NET "o_SDR_A[5]"	LOC = P75;
+#NET "o_SDR_A[6]"	LOC = P78;
+#NET "o_SDR_A[7]"	LOC = P79;
+#NET "o_SDR_A[8]"	LOC = P80;
+#NET "o_SDR_A[9]"	LOC = P81;
+#NET "o_SDR_A[10]"	LOC = P93;
+#NET "o_SDR_A[11]"	LOC = P82;
+#NET "o_SDR_A[12]"	LOC = P83;
+#NET "o_SDR_BA[0]"	LOC = P95; # o_SDR_A[13]
+#NET "o_SDR_BA[1]"	LOC = P94; # o_SDR_A[14]
+#
+#NET "o_SDR_CLK"		LOC = P84;
+#NET "o_SDR_CSB"		LOC = P97;
+#NET "o_SDR_RASn"	LOC = P98;
+#NET "o_SDR_CASn"	LOC = P99;
+#NET "o_SDR_WEn"		LOC = P100;
+#NET "o_SDR_DQM"		LOC = P101;
 
 NET "i_CLK" TNM_NET = i_CLK;
 TIMESPEC TS_i_CLK = PERIOD "i_CLK" 50 MHz HIGH 50%;
+
+PIN "_clock_gen/clkout1_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;
