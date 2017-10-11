@@ -71,3 +71,7 @@ isim/
 isim.*
 ipcore_dir/tmp/*
 fuse*
+
+*.log
+
+_impact\.cmd
