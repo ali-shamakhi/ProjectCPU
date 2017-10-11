@@ -73,7 +73,7 @@ wire o_CLK_100;
 // all unused output to Z
 
 //assign o_PSCLK = 1'bz;
-assign o_PSCLK = !o_CLK_5;
+assign o_PSCLK = ~o_CLK_5;
 //assign o_LEDData = 1'bz;
 //assign o_LEDLatch = 1'bz;
 
@@ -123,6 +123,8 @@ assign o_LCDLatch = 1'bz;
 
 //////////////////////////////////////
 
+	reg [15:0] i_Data16;
+
   clock_gen _clock_gen
    (// Clock in ports
     .i_CLK_50(i_CLK),      // IN
@@ -132,12 +134,18 @@ assign o_LCDLatch = 1'bz;
     .o_CLK_50(o_CLK_50),     // OUT
     .o_CLK_100(o_CLK_100));    // OUT
 	 
-	 LED_Driver _LED_Driver (
-		.i_CLK(i_CLK_5), 
+	 	LED_Driver uut (
+		.i_CLK(o_CLK_5), 
 		.i_Data16(i_Data16), 
-		.i_RESET(i_RESET), 
+		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
-		);
+	);
+
+
+	initial begin
+		// Initialize Inputs
+		i_Data16 = 16'b0000001100000000;
+	end
 
 endmodule

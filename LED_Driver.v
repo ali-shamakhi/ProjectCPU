@@ -23,15 +23,18 @@ module LED_Driver(
     input [15:0] i_Data16,
     input i_RESET,
     output o_LEDData,
-    output reg o_LEDLatch	// active low
+    output o_LEDLatch	// active low
     );
 	
 	reg [3:0] _pos;
 	
 	reg _working;
+	
+	reg o_LL;
 
 	assign o_LEDData = i_Data16[_pos ^ 4'h8];
-	//assign o_LEDLatch = !(_pos == 4'hF);
+	//assign o_LL = !(_pos == 4'hF);
+	assign o_LEDLatch = o_LL | i_CLK;
 
 	initial
 	begin
@@ -44,7 +47,7 @@ module LED_Driver(
 	always @ (posedge i_CLK)
 	begin
 	
-		o_LEDLatch = 1;
+		//o_LL = 1;
 	
 		if (i_RESET)
 		begin
@@ -65,9 +68,9 @@ module LED_Driver(
 	begin
 		
 		if (_pos == 4'hF)
-			o_LEDLatch = 0;
+			o_LL = 0;
 		else
-			o_LEDLatch = 1;
+			o_LL = 1;
 	end
 
 endmodule
