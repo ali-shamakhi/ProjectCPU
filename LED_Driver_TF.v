@@ -48,7 +48,7 @@ module LED_Driver_TF;
 	initial begin
 		// Initialize Inputs
 		i_CLK = 0;
-		i_Data16 = 0;
+		i_Data16 = 16'b0100100010000110;
 		i_RESET = 1;
 
 		// Wait 100 ns for global reset to finish
@@ -58,7 +58,7 @@ module LED_Driver_TF;
 		
 		i_RESET = 0;
 		
-		i_Data16 = 16'h9D1F;
+		
 
 	end
       

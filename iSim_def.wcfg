@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="D:/ArchLab/ProjectCPU/LED_Driver_TF_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="LED_Driver_TF" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="13" />
+   <wvobject fp_name="/LED_Driver_TF/o_LEDData" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_LEDData</obj_property>
+      <obj_property name="ObjectShortName">o_LEDData</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/o_LEDLatch" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_LEDLatch</obj_property>
+      <obj_property name="ObjectShortName">o_LEDLatch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/i_CLK" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_CLK</obj_property>
+      <obj_property name="ObjectShortName">i_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/i_Data16" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_Data16[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i_Data16[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/i_RESET" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_RESET</obj_property>
+      <obj_property name="ObjectShortName">i_RESET</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/i_CLK" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_CLK</obj_property>
+      <obj_property name="ObjectShortName">i_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/i_Data16" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_Data16[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i_Data16[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/i_RESET" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_RESET</obj_property>
+      <obj_property name="ObjectShortName">i_RESET</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/o_LEDData" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_LEDData</obj_property>
+      <obj_property name="ObjectShortName">o_LEDData</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/o_LEDLatch" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_LEDLatch</obj_property>
+      <obj_property name="ObjectShortName">o_LEDLatch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/_pos" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">_pos[3:0]</obj_property>
+      <obj_property name="ObjectShortName">_pos[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/_carry" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">_carry</obj_property>
+      <obj_property name="ObjectShortName">_carry</obj_property>
+   </wvobject>
+   <wvobject fp_name="/LED_Driver_TF/uut/_working" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">_working</obj_property>
+      <obj_property name="ObjectShortName">_working</obj_property>
+   </wvobject>
+</wave_config>

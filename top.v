@@ -73,7 +73,7 @@ wire o_CLK_100;
 // all unused output to Z
 
 //assign o_PSCLK = 1'bz;
-assign o_PSCLK = o_CLK_5;
+assign o_PSCLK = !o_CLK_5;
 //assign o_LEDData = 1'bz;
 //assign o_LEDLatch = 1'bz;
 
@@ -132,6 +132,12 @@ assign o_LCDLatch = 1'bz;
     .o_CLK_50(o_CLK_50),     // OUT
     .o_CLK_100(o_CLK_100));    // OUT
 	 
-	 
+	 LED_Driver _LED_Driver (
+		.i_CLK(i_CLK_5), 
+		.i_Data16(i_Data16), 
+		.i_RESET(i_RESET), 
+		.o_LEDData(o_LEDData), 
+		.o_LEDLatch(o_LEDLatch)
+		);
 
 endmodule
