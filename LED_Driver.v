@@ -23,40 +23,46 @@ module LED_Driver(
     input [15:0] i_Data16,
     input i_RESET,
     output reg o_LEDData,
-    output reg o_LEDLatch	// active low
+    output o_LEDLatch	// active low
     );
 	
 	reg [3:0] _pos;
-	reg [3:0] _xpos;
+	wire [3:0] _xpos;
 	reg _carry;
+	
+	reg _working;
+
+	assign _xpos = _pos ^ 4'h8;
+	assign o_LEDLatch = !_carry;
 
 	initial
 	begin
+	
 		_pos = 4'h0;
 		_carry = 1'b0;
-		o_LEDLatch = 1'b1;
 		o_LEDData = 1'b0;
+		_working = 0;
+		
 	end
 	
 	always @ (posedge i_CLK)
 	begin
 	
-	o_LEDLatch = 1'b1;
+	//o_LEDLatch = 1'b1;
 	
 		if (i_RESET)
 		begin
 		
 			_pos = 4'h0;
-		_carry = 1'b0;
-		o_LEDLatch = 1'b1;
-		o_LEDData = 1'b0;
+			_carry = 1'b0;
+			o_LEDData = 1'b0;
+			_working = 0;
 			
 		end
 		
 		else
 		begin
 			
-			_xpos = _pos ^ 4'h8;
 			o_LEDData = i_Data16[_xpos];
 			
 		end
@@ -70,20 +76,24 @@ module LED_Driver(
 		begin
 		
 			_pos = 4'h0;
-		_carry = 1'b0;
-		o_LEDLatch = 1'b1;
-		o_LEDData = 1'b0;
+			_carry = 1'b0;
+			o_LEDData = 1'b0;
+			_working = 0;
 			
 		end
 		
+		
 		else
 		begin
-		{_carry, _pos} = _pos + 1;
-		
-		if (_carry)
-			o_LEDLatch = 1'b0;	// enable
+		if (_working == 0)
+			_working = 1;
 		else
-			o_LEDLatch = 1'b1;	// disable
+			{_carry, _pos} = _pos + 1;
+		
+		//if (_carry)
+		//	o_LEDLatch = 1'b0;	// enable
+		//else
+		//	o_LEDLatch = 1'b1;	// disable
 		end
 			
 		
