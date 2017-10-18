@@ -31,16 +31,20 @@ module LED_Driver(
 	reg _working;
 	
 	reg _last_pos_low;
-
-	assign o_LEDData = i_Data16[_pos ^ 4'h8];
 	
-	assign o_LEDLatch = _last_pos_low | i_CLK;
+	reg [15:0] _int_LED16;
+
+	assign o_LEDData = _int_LED16[_pos ^ 4'h8];
+	
+	assign o_LEDLatch = ~(~_last_pos_low & ~i_CLK & _working);
 
 	initial
 	begin
 	
 		_pos = 4'h0;
 		_working = 0;
+		_last_pos_low = 0;
+		_int_LED16 = 16'h0000;
 		
 	end
 	
@@ -52,12 +56,20 @@ module LED_Driver(
 		
 			_pos = 4'h0;
 			_working = 0;
+			_int_LED16 = 16'h0000;
 			
 		end
-		else if (_working == 0)
-			_working = 1;
-		else if (_working == 1)
-			_pos = _pos + 1;
+		
+		if (~i_RESET)
+		begin
+			if (_working == 0)
+				_working = 1;
+			else if (_working == 1)
+				_pos = _pos + 1;
+		end
+		
+		if (_pos == 4'h0)
+			_int_LED16 = i_Data16;
 		
 	end
 	

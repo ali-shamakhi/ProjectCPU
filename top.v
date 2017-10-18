@@ -72,13 +72,12 @@ wire o_CLK_100;
 
 // all unused output to Z
 
-//assign o_PSCLK = 1'bz;
 assign o_PSCLK = ~o_CLK_5;
 //assign o_LEDData = 1'bz;
 //assign o_LEDLatch = 1'bz;
 
 
-assign o_DIPLatch = 1'bz;
+//assign o_DIPLatch = 1'bz;
 assign o_SEGData = 1'bz;
 assign o_SEGLatc = 1'bz;
 assign o_LCDData = 1'bz;
@@ -122,8 +121,8 @@ assign o_LCDData = 1'bz;
 assign o_LCDLatch = 1'bz;
 
 //////////////////////////////////////
-
-	reg [15:0] i_Data16;
+	
+	wire [15:0] _DIP16;
 
    clock_gen _clock_gen
    (
@@ -136,18 +135,21 @@ assign o_LCDLatch = 1'bz;
     .o_CLK_100(o_CLK_100)    // OUT
 	);
 	 
-   LED_Driver uut
+   LED_Driver _LED_Driver
    (
 		.i_CLK(o_CLK_5), 
-		.i_Data16(i_Data16), 
+		.i_Data16(_DIP16), 
 		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
 	);
-
-   initial begin
-		// Initialize Inputs
-		i_Data16 = 16'b0000001100000000;
-	end
+	
+	DIP_Parallelizer _DIP_Parallelizer (
+    .i_CLK(o_CLK_5), 
+    .i_Data(i_DIPData), 
+    .i_RESET(i_RESET), 
+    .o_DIP16(_DIP16), 
+    .o_DIPLatch(o_DIPLatch)
+    );
 
 endmodule

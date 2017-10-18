@@ -34,7 +34,7 @@ module DIP_Parallelizer(
 	
 	reg [15:0] _int_DIP16;
 
-	assign o_DIPLatch = _last_pos_low | i_CLK | ~_working;
+	assign o_DIPLatch = ~(~_last_pos_low & ~i_CLK & _working);
 
 	initial
 	begin
