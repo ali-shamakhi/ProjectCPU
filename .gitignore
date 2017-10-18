@@ -75,3 +75,7 @@ fuse*
 *.log
 
 _impact\.cmd
+
+*.exe
+
+*.wdb

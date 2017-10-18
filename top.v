@@ -125,16 +125,19 @@ assign o_LCDLatch = 1'bz;
 
 	reg [15:0] i_Data16;
 
-  clock_gen _clock_gen
-   (// Clock in ports
+   clock_gen _clock_gen
+   (
+	 // Clock in ports
     .i_CLK_50(i_CLK),      // IN
     // Clock out ports
     .o_CLK_5(o_CLK_5),     // OUT
     .o_CLK_20(o_CLK_20),     // OUT
     .o_CLK_50(o_CLK_50),     // OUT
-    .o_CLK_100(o_CLK_100));    // OUT
+    .o_CLK_100(o_CLK_100)    // OUT
+	);
 	 
-	 	LED_Driver uut (
+   LED_Driver uut
+   (
 		.i_CLK(o_CLK_5), 
 		.i_Data16(i_Data16), 
 		.i_RESET(1'b0), 
@@ -142,8 +145,7 @@ assign o_LCDLatch = 1'bz;
 		.o_LEDLatch(o_LEDLatch)
 	);
 
-
-	initial begin
+   initial begin
 		// Initialize Inputs
 		i_Data16 = 16'b0000001100000000;
 	end
