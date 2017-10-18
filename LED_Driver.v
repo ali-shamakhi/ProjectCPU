@@ -41,7 +41,7 @@ module LED_Driver(
 	initial
 	begin
 	
-		_pos = 4'h0;
+		_pos = 4'hF;
 		_working = 0;
 		_last_pos_low = 0;
 		_int_LED16 = 16'h0000;
@@ -54,7 +54,7 @@ module LED_Driver(
 		if (i_RESET)
 		begin
 		
-			_pos = 4'h0;
+			_pos = 4'hF;
 			_working = 0;
 			_int_LED16 = 16'h0000;
 			
@@ -65,10 +65,10 @@ module LED_Driver(
 			if (_working == 0)
 				_working = 1;
 			else if (_working == 1)
-				_pos = _pos + 1;
+				_pos = _pos - 1;
 		end
 		
-		if (_pos == 4'h0)
+		if (_pos == 4'hF)
 			_int_LED16 = i_Data16;
 		
 	end
@@ -76,7 +76,7 @@ module LED_Driver(
 	always @ (negedge i_CLK)
 	begin
 		
-		if (_pos == 4'hF)
+		if (_pos == 4'h0)
 			_last_pos_low = 0;
 		else
 			_last_pos_low = 1;
