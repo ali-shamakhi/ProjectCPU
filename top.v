@@ -78,8 +78,8 @@ assign o_PSCLK = ~o_CLK_5;
 
 
 //assign o_DIPLatch = 1'bz;
-assign o_SEGData = 1'bz;
-assign o_SEGLatc = 1'bz;
+//assign o_SEGData = 1'bz;
+//assign o_SEGLatc = 1'bz;
 assign o_LCDData = 1'bz;
 assign o_LCDLatch = 1'bz;
 
@@ -114,8 +114,8 @@ assign o_TXD2 = 1'bz;
 
 
 
-assign o_SEGData = 1'bz;
-assign o_SEGLatch = 1'bz;
+//assign o_SEGData = 1'bz;
+//assign o_SEGLatch = 1'bz;
 
 assign o_LCDData = 1'bz;
 assign o_LCDLatch = 1'bz;
@@ -151,5 +151,15 @@ assign o_LCDLatch = 1'bz;
     .o_DIP16(_DIP16), 
     .o_DIPLatch(o_DIPLatch)
     );
+	 
+	 SevenSegment_Driver _SevenSegment_Driver (
+    .i_Bin13(_DIP16[12 -: 13]), 
+    .i_CLK(o_CLK_5), 
+    .i_CLK_Bin2BCD(o_CLK_100), 
+    .o_SegData(o_SEGData),
+    .o_SegLatch(o_SEGLatch)
+    );
+
+
 
 endmodule

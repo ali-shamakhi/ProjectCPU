@@ -81,3 +81,9 @@ _impact\.cmd
 *.wdb
 
 *.tfi
+
+*.ipf
+
+auto_project\.ipf
+
+auto_project_1\.ipf

@@ -20,31 +20,34 @@
 //////////////////////////////////////////////////////////////////////////////////
 module SevenSeg_Seriallizer (
     input i_CLK,	// ~i_CLK to 7SEG_CLK
-    input [12:0] i_7SegData16,
+    input [15:0] i_7SegData16_0,
+    input [15:0] i_7SegData16_1,
+    input [15:0] i_7SegData16_2,
+    input [15:0] i_7SegData16_3,
     input i_RESET,
     output o_7SegData,
     output o_7Seg_Latch	// active low
     );
 	
-	reg [4:0] _pos;
+	reg [5:0] _pos;
 	
 	reg _working;
 	
 	reg _last_pos_low;
 	
-	reg [12:0] _int_7SegData;
+	reg [63:0] _int_7SegData64;
 
-	assign o_7SegData = _int_7SegData[_pos];
+	assign o_7SegData = _int_7SegData64[_pos];
 	
 	assign o_7Seg_Latch = ~(~_last_pos_low & ~i_CLK & _working);
 
 	initial
 	begin
 	
-		_pos = 4'h0;
+		_pos = 6'h0;
 		_working = 0;
 		_last_pos_low = 0;
-		_int_7SegData = 13'b0000000000000;
+		_int_7SegData64 = 64'h0000000000000000;
 		
 	end
 	
@@ -54,9 +57,9 @@ module SevenSeg_Seriallizer (
 		if (i_RESET)
 		begin
 		
-			_pos = 4'h0;
+			_pos = 6'h0;
 			_working = 0;
-			_int_7SegData = 13'b0000000000000;
+			_int_7SegData64 = 64'h0000000000000000;
 			
 		end
 		
@@ -67,19 +70,22 @@ module SevenSeg_Seriallizer (
 				_working = 1;
 			else if (_working == 1)
 				_pos = _pos + 1;
-			if (_pos == 13)
-				_pos = 0;
 		end
 		
-		if (_pos == 4'hF)
-			_int_7SegData = i_7SegData16;
+		if (_pos == 6'b000000)
+		begin
+			_int_7SegData64[15 -: 16] = i_7SegData16_0;
+			_int_7SegData64[31 -: 16] = i_7SegData16_1;
+			_int_7SegData64[47 -: 16] = i_7SegData16_2;
+			_int_7SegData64[63 -: 16] = i_7SegData16_3;
+		end
 		
 	end
 	
 	always @ (negedge i_CLK)
 	begin
 		
-		if (_pos == 12)
+		if (_pos[3 -: 4] == 4'b1111)
 			_last_pos_low = 0;
 		else
 			_last_pos_low = 1;
