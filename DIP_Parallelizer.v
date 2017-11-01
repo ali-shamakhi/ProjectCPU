@@ -67,7 +67,7 @@ module DIP_Parallelizer(
 			
 		end
 			
-		if (_pos == 5'b00000)
+		if (_pos == 5'h00)
 		begin
 			o_DIP16 = _int_DIP16;
 			o_Switch5 = _int_Switch5;
@@ -77,7 +77,7 @@ module DIP_Parallelizer(
 			if (_pos[4] == 1'b0)
 				_int_DIP16[_pos ^ 4'h8] = i_Data;
 			else if (_pos < 5'h15)
-				_int_Switch5[_pos[3 -: 4]] = i_Data;
+				_int_Switch5[4'h4 - _pos[3 -: 4]] = i_Data;
 			
 		if (~i_RESET)
 		begin

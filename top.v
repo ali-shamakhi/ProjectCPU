@@ -139,7 +139,7 @@ assign o_LCDLatch = 1'bz;
    LED_Driver _LED_Driver
    (
 		.i_CLK(o_CLK_5), 
-		.i_Data16({11'h7FF, _Switch5}), 
+		.i_Data16({11'h000, _Switch5}), 
 		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
