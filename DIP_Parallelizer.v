@@ -23,26 +23,30 @@ module DIP_Parallelizer(
     input i_Data,
     input i_RESET,
     output reg [15:0] o_DIP16,
+	 output reg [4:0] o_Switch5,
     output o_DIPLatch
     );
 	
-	reg [3:0] _pos;
+	reg [4:0] _pos;
 	
 	reg _working;
 	
 	reg _last_pos_low;
 	
 	reg [15:0] _int_DIP16;
+	reg [4:0]  _int_Switch5;
 
 	assign o_DIPLatch = ~(~_last_pos_low & ~i_CLK & _working);
 
 	initial
 	begin
 	
-		_pos = 4'h0;
+		_pos = 5'h00;
 		_working = 0;
 		_int_DIP16 = 16'h0000;
 		o_DIP16 = 16'h0000;
+		_int_Switch5 = 5'h00;
+		o_Switch5 = 5'h00;
 		
 		_last_pos_low = 0;
 		
@@ -54,25 +58,38 @@ module DIP_Parallelizer(
 		if (i_RESET)
 		begin
 		
-			_pos = 4'h0;
+			_pos = 5'h00;
 			_working = 0;
 			_int_DIP16 = 16'h0000;
 			o_DIP16 = 16'h0000;
+			_int_Switch5 = 5'h00;
+			o_Switch5 = 5'h00;
 			
 		end
 			
-		if (_pos == 4'h0)
+		if (_pos == 5'b00000)
+		begin
 			o_DIP16 = _int_DIP16;
+			o_Switch5 = _int_Switch5;
+		end
 		
 		if (_working)
-			_int_DIP16[_pos ^ 4'h8] = i_Data;
+			if (_pos[4] == 1'b0)
+				_int_DIP16[_pos ^ 4'h8] = i_Data;
+			else if (_pos < 5'h15)
+				_int_Switch5[_pos[3 -: 4]] = i_Data;
 			
 		if (~i_RESET)
 		begin
+		
 			if (_working == 0)
 				_working = 1;
 			else if (_working == 1)
 				_pos = _pos + 1;
+				
+			if (_pos >= 5'h18)
+				_pos = 5'h00;
+				
 		end
 		
 	end
@@ -80,7 +97,7 @@ module DIP_Parallelizer(
 	always @ (negedge i_CLK)
 	begin
 	
-		if (_pos == 4'h0)
+		if (_pos == 5'h00)
 		begin
 			_last_pos_low = 0;
 		end

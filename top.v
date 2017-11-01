@@ -123,6 +123,7 @@ assign o_LCDLatch = 1'bz;
 //////////////////////////////////////
 	
 	wire [15:0] _DIP16;
+	wire [4:0] _Switch5;
 
    clock_gen _clock_gen
    (
@@ -138,7 +139,7 @@ assign o_LCDLatch = 1'bz;
    LED_Driver _LED_Driver
    (
 		.i_CLK(o_CLK_5), 
-		.i_Data16(_DIP16), 
+		.i_Data16({11'h7FF, _Switch5}), 
 		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
@@ -148,7 +149,8 @@ assign o_LCDLatch = 1'bz;
     .i_CLK(o_CLK_5), 
     .i_Data(i_DIPData), 
     .i_RESET(i_RESET), 
-    .o_DIP16(_DIP16), 
+    .o_DIP16(_DIP16),
+	 .o_Switch5(_Switch5),
     .o_DIPLatch(o_DIPLatch)
     );
 	 
@@ -159,7 +161,7 @@ assign o_LCDLatch = 1'bz;
     .o_SegData(o_SEGData),
     .o_SegLatch(o_SEGLatch)
     );
-
+	
 
 
 endmodule

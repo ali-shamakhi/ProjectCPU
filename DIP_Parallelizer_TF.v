@@ -32,14 +32,27 @@ module DIP_Parallelizer_TF;
 	// Outputs
 	wire [15:0] o_DIP16;
 	wire o_DIPLatch;
-
+	wire [4:0] o_Switch5;
+	
+	wire o_LEDData;
+	wire o_LEDLatch;
+	
 	// Instantiate the Unit Under Test (UUT)
 	DIP_Parallelizer uut (
+    .i_CLK(i_CLK), 
+    .i_Data(i_Data), 
+    .i_RESET(i_RESET), 
+    .o_DIP16(o_DIP16), 
+    .o_Switch5(o_Switch5), 
+    .o_DIPLatch(o_DIPLatch)
+    );
+
+	 LED_Driver luut(
 		.i_CLK(i_CLK), 
-		.i_Data(i_Data), 
-		.i_RESET(i_RESET), 
-		.o_DIP16(o_DIP16), 
-		.o_DIPLatch(o_DIPLatch)
+		.i_Data16({11'h000, o_Switch5}), 
+		.i_RESET(1'b0), 
+		.o_LEDData(o_LEDData), 
+		.o_LEDLatch(o_LEDLatch)
 	);
 
 	always
@@ -91,6 +104,17 @@ module DIP_Parallelizer_TF;
 		i_Data = 0;
 		#10;
 		i_Data = 0;
+		#10;
+
+		i_Data = 1;
+		#10;
+		i_Data = 0;
+		#10;
+		i_Data = 1;
+		#10;
+		i_Data = 1;
+		#10;
+		i_Data = 1;
 		#10;
 
 	end
