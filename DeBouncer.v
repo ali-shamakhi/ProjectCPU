@@ -24,25 +24,26 @@ module DeBouncer(
     output reg o_Data
     );
 	 
-	 unsigned reg [19:0] _count;
+	 reg [19:0] _count;
 	 
 		initial
 		begin
-	      _count = 0;
+	      _count = 20'd0;
+			o_Data = 1;
 		end
 		
 		always @(posedge i_CLK)
 		begin
 		
-			if (i_Data == ~o_Data)
-					_count = _count + 1;
-				else
-					_count = 0;
+			if (i_Data != o_Data)
+				_count = _count + 20'd1;
+			else
+				_count = 20'd0;
 					
-			if (_count >= 500000)
+			if (_count >= 20'd500000)
 			begin
-				_count = 0;
-				o_Data = i_Data;
+				_count = 20'd0;
+				o_Data = ~o_Data;
 			end
 			
 		end

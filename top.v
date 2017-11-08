@@ -154,8 +154,31 @@ assign o_LCDLatch = 1'bz;
     .o_DIPLatch(o_DIPLatch)
     );
 	 
+	 wire _PC_INC;
+	 wire _PC_RESET;
+	 
+	 DeBouncer _DeBouncer3 (
+	 .i_Data(_Switch5[0]), 	// SW3
+    .i_CLK(o_CLK_5), 
+    .o_Data(_PC_INC)
+    );
+
+	DeBouncer _DeBouncer4 (
+	 .i_Data(_Switch5[1]), 	// SW4
+    .i_CLK(o_CLK_5), 
+    .o_Data(_PC_RESET)
+    );
+	 
+	 wire [7:0] o_PC;
+	 
+	 PC _PC (
+    .i_CLK(~_PC_INC),
+    .i_RESET(_PC_RESET), 
+    .o_PC(o_PC)
+    );
+	 
 	 SevenSegment_Driver _SevenSegment_Driver (
-    .i_Bin13(_DIP16[12 -: 13]), 
+    .i_Bin13({5'h00, o_PC}), 
     .i_CLK(o_CLK_5), 
     .i_CLK_Bin2BCD(o_CLK_100), 
     .o_SegData(o_SEGData),
