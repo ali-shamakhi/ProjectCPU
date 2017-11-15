@@ -124,6 +124,9 @@ assign o_LCDLatch = 1'bz;
 	
 	wire [15:0] _DIP16;
 	wire [4:0] _Switch5;
+	
+	wire [7:0] o_PC;
+	wire [15:0] _INSTR;
 
    clock_gen _clock_gen
    (
@@ -139,7 +142,7 @@ assign o_LCDLatch = 1'bz;
    LED_Driver _LED_Driver
    (
 		.i_CLK(o_CLK_5), 
-		.i_Data16({11'h000, _Switch5}), 
+		.i_Data16(_INSTR), 
 		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
@@ -154,8 +157,8 @@ assign o_LCDLatch = 1'bz;
     .o_DIPLatch(o_DIPLatch)
     );
 	 
-	 wire _PC_INC;
-	 wire _PC_RESET;
+	 //wire _PC_INC;
+	 //wire _PC_RESET;
 	 
 	 DeBouncer _DeBouncer3 (
 	 .i_Data(_Switch5[0]), 	// SW3
@@ -169,13 +172,17 @@ assign o_LCDLatch = 1'bz;
     .o_Data(_PC_RESET)
     );
 	 
-	 wire [7:0] o_PC;
-	 
 	 PC _PC (
     .i_CLK(~_PC_INC),
     .i_RESET(_PC_RESET), 
     .o_PC(o_PC)
     );
+	 
+	 InstructionMemory _InstructionMemory (
+		.clka(o_CLK_5), // input clka
+		.addra(o_PC), // input [7 : 0] addra
+		.douta(_INSTR) // output [15 : 0] douta
+		);
 	 
 	 SevenSegment_Driver _SevenSegment_Driver (
     .i_Bin13({5'h00, o_PC}), 
