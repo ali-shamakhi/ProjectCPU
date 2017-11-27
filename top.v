@@ -63,16 +63,16 @@ module top(
     input i_SYS_RESET
     );
 
-wire o_CLK_5;
-wire o_CLK_20;
-wire o_CLK_50;
-wire o_CLK_100;
+wire _CLK_5;
+wire _CLK_20;
+wire _CLK_50;
+wire _CLK_100;
 
 //////////////////////////////////////
 
 // all unused output to Z
 
-assign o_PSCLK = ~o_CLK_5;
+assign o_PSCLK = ~_CLK_5;
 //assign o_LEDData = 1'bz;
 //assign o_LEDLatch = 1'bz;
 
@@ -125,7 +125,7 @@ assign o_LCDLatch = 1'bz;
 	wire [15:0] _DIP16;
 	wire [4:0] _Switch5;
 	
-	wire [7:0] o_PC;
+	wire [7:0] _PC;
 	wire [15:0] _INSTR;
 
    clock_gen _clock_gen
@@ -133,61 +133,101 @@ assign o_LCDLatch = 1'bz;
 	 // Clock in ports
     .i_CLK_50(i_CLK),      // IN
     // Clock out ports
-    .o_CLK_5(o_CLK_5),     // OUT
-    .o_CLK_20(o_CLK_20),     // OUT
-    .o_CLK_50(o_CLK_50),     // OUT
-    .o_CLK_100(o_CLK_100)    // OUT
+    .o_CLK_5(_CLK_5),     // OUT
+    .o_CLK_20(_CLK_20),     // OUT
+    .o_CLK_50(_CLK_50),     // OUT
+    .o_CLK_100(_CLK_100)    // OUT
 	);
+	 
+	 
+	 assign _PC_INC = ~_DB3;
+	 
+	 DeBouncer _DeBouncer3 (
+	 .i_Data(_Switch5[0]), 	// SW3
+    .i_CLK(_CLK_5), 
+    .o_Data(_DB3)
+    );
+
+	DeBouncer _DeBouncer4 (
+	 .i_Data(_Switch5[1]), 	// SW4
+    .i_CLK(_CLK_5), 
+    .o_Data(_PC_RESET)
+    );
+	 
+	 PC _PC_Module (
+    .i_CLK(_PC_INC),
+    .i_RESET(_PC_RESET), 
+    .o_PC(_PC)
+    );
+	 
+	 InstructionMemory _InstructionMemory (
+		.clka(_CLK_5), // input clka
+		.addra(_PC), // input [7 : 0] addra
+		.douta(_INSTR) // output [15 : 0] douta
+	 );
+	 
+	 wire [2:0] _AddrReg1;
+	 wire [2:0] _AddrReg2;
+	 wire [3:0] _ALUOp;
+	 
+	 InstructionDecoder _InstructionDecoder (
+    .i_Instr(_INSTR), 
+    .o_AddrReg1(_AddrReg1), 
+    .o_AddrReg2(_AddrReg2), 
+    .o_ALUOp(_ALUOp), 
+    .o_WriteBack(_WriteBack),
+	 .o_ShowR1(_ShowR1)
+    );
+	 
+	 wire [7:0] _Result;
+	 
+	 wire [7:0] _Data1;
+	 wire [7:0] _Data2;
+	 
+	 RegisterBank _RegisterBank (
+    .i_AddrReg1(_AddrReg1), 
+    .i_AddrReg2(_AddrReg2), 
+    .i_AddrRegDest(_AddrReg1), 
+    .i_WriteData(_Result), 
+    .i_WriteBack(_WriteBack), 
+    .i_CLK(_PC_INC), 
+    .o_Data1(_Data1), 
+    .o_Data2(_Data2)
+    );
+	 
+	 ALU _ALU (
+    .i_Data1(_Data1), 
+    .i_Data2(_Data2), 
+    .i_ALUOp(_ALUOp), 
+    .o_Result(_Result), 
+    .o_Z(_Z), 
+    .o_S(_S), 
+	 .o_C(_C),
+    .o_OF(_OF)
+    );
 	 
    LED_Driver _LED_Driver
    (
-		.i_CLK(o_CLK_5), 
-		.i_Data16(_INSTR), 
+		.i_CLK(_CLK_5), 
+		.i_Data16({_Z, _S, _C, _OF, 4'h0, (_ShowR1 ? _Result : 8'h00)}), 
 		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
 	);
 	
 	DIP_Parallelizer _DIP_Parallelizer (
-    .i_CLK(o_CLK_5), 
+    .i_CLK(_CLK_5), 
     .i_Data(i_DIPData), 
-    .i_RESET(i_RESET), 
+    .i_RESET(1'b0), 
     .o_DIP16(_DIP16),
 	 .o_Switch5(_Switch5),
     .o_DIPLatch(o_DIPLatch)
     );
-	 
-	 //wire _PC_INC;
-	 //wire _PC_RESET;
-	 
-	 DeBouncer _DeBouncer3 (
-	 .i_Data(_Switch5[0]), 	// SW3
-    .i_CLK(o_CLK_5), 
-    .o_Data(_PC_INC)
-    );
-
-	DeBouncer _DeBouncer4 (
-	 .i_Data(_Switch5[1]), 	// SW4
-    .i_CLK(o_CLK_5), 
-    .o_Data(_PC_RESET)
-    );
-	 
-	 PC _PC (
-    .i_CLK(~_PC_INC),
-    .i_RESET(_PC_RESET), 
-    .o_PC(o_PC)
-    );
-	 
-	 InstructionMemory _InstructionMemory (
-		.clka(o_CLK_5), // input clka
-		.addra(o_PC), // input [7 : 0] addra
-		.douta(_INSTR) // output [15 : 0] douta
-		);
-	 
+	
 	 SevenSegment_Driver _SevenSegment_Driver (
-    .i_Bin13({5'h00, o_PC}), 
-    .i_CLK(o_CLK_5), 
-    .i_CLK_Bin2BCD(o_CLK_100), 
+    .i_Bin13({5'h00, _PC}), 
+    .i_CLK(_CLK_5), 
+    .i_CLK_Bin2BCD(_CLK_100), 
     .o_SegData(o_SEGData),
     .o_SegLatch(o_SEGLatch)
     );
