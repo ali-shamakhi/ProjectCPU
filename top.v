@@ -139,7 +139,6 @@ assign o_LCDLatch = 1'bz;
     .o_CLK_100(_CLK_100)    // OUT
 	);
 	 
-	 
 	 assign _PC_INC = ~_DB3;
 	 
 	 DeBouncer _DeBouncer3 (
@@ -148,64 +147,14 @@ assign o_LCDLatch = 1'bz;
     .o_Data(_DB3)
     );
 
+	assign _PC_RESET = _DB4;
+
 	DeBouncer _DeBouncer4 (
 	 .i_Data(_Switch5[1]), 	// SW4
     .i_CLK(_CLK_5), 
-    .o_Data(_PC_RESET)
+    .o_Data(_DB4)
     );
-	 
-	 PC _PC_Module (
-    .i_CLK(_PC_INC),
-    .i_RESET(_PC_RESET), 
-    .o_PC(_PC)
-    );
-	 
-	 InstructionMemory _InstructionMemory (
-		.clka(_CLK_5), // input clka
-		.addra(_PC), // input [7 : 0] addra
-		.douta(_INSTR) // output [15 : 0] douta
-	 );
-	 
-	 wire [2:0] _AddrReg1;
-	 wire [2:0] _AddrReg2;
-	 wire [3:0] _ALUOp;
-	 
-	 InstructionDecoder _InstructionDecoder (
-    .i_Instr(_INSTR), 
-    .o_AddrReg1(_AddrReg1), 
-    .o_AddrReg2(_AddrReg2), 
-    .o_ALUOp(_ALUOp), 
-    .o_WriteBack(_WriteBack),
-	 .o_ShowR1(_ShowR1)
-    );
-	 
-	 wire [7:0] _Result;
-	 
-	 wire [7:0] _Data1;
-	 wire [7:0] _Data2;
-	 
-	 RegisterBank _RegisterBank (
-    .i_AddrReg1(_AddrReg1), 
-    .i_AddrReg2(_AddrReg2), 
-    .i_AddrRegDest(_AddrReg1), 
-    .i_WriteData(_Result), 
-    .i_WriteBack(_WriteBack), 
-    .i_CLK(_PC_INC), 
-    .o_Data1(_Data1), 
-    .o_Data2(_Data2)
-    );
-	 
-	 ALU _ALU (
-    .i_Data1(_Data1), 
-    .i_Data2(_Data2), 
-    .i_ALUOp(_ALUOp), 
-    .o_Result(_Result), 
-    .o_Z(_Z), 
-    .o_S(_S), 
-	 .o_C(_C),
-    .o_OF(_OF)
-    );
-	 
+
    LED_Driver _LED_Driver
    (
 		.i_CLK(_CLK_5), 
@@ -232,6 +181,18 @@ assign o_LCDLatch = 1'bz;
     .o_SegLatch(o_SEGLatch)
     );
 	
+	Microcontroller instance_name (
+    .i_CLK(_PC_INC), 
+    .i_CLK_MEM(i_CLK_5), 
+    .i_RST(_PC_RESET), 
+    .o_PC(_PC), 
+    .o_INSTR(_INSTR), 
+    .o_Z(_Z), 
+    .o_S(_S), 
+    .o_C(_C), 
+    .o_OF(_OF),
+	 .o_ShowR1(_ShowR1)
+    );
 
 
 endmodule

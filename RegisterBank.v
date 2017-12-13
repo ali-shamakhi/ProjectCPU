@@ -24,9 +24,11 @@ module RegisterBank(
     input [2:0] i_AddrRegDest,
 	 input [7:0] i_WriteData,
     input i_WriteBack,
-    input i_CLK,						// action on negedge
+	 //input i_CLK_ID,
+    input i_CLK,						// write-back on negedge
     output [7:0] o_Data1,
     output [7:0] o_Data2
+	 //output reg o_DataReady
     );
 
 	reg [7:0] _R [7:0];
@@ -44,14 +46,31 @@ module RegisterBank(
 		_R[5] = 8'h00;
 		_R[6] = 8'h00;
 		_R[7] = 8'h00;
+		//o_Data1 = 8'h00;
+		//o_Data2 = 8'h00;
+		//o_DataReady = 1'b1;
 	end
 	
 	always @(negedge i_CLK)
 	begin
 		
-		if (i_WriteBack)
-			_R[i_AddrRegDest] <= i_WriteData;
+			if (i_WriteBack)
+				_R[i_AddrRegDest] = i_WriteData;
 		
 	end
+	
+	/*
+	always @(i_CLK_ID)
+	begin
+			if (i_CLK_ID)
+			begin
+				o_Data1 = _R[i_AddrReg1];
+				o_Data2 = _R[i_AddrReg2];
+				//o_DataReady = 1'b1;
+			end
+			//else
+				//o_DataReady = 1'b0;
+	end
+	*/
 
 endmodule

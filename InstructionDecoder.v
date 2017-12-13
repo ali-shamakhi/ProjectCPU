@@ -29,6 +29,7 @@ module InstructionDecoder(
     output reg [3:0] o_ALUOp,
 	 output reg o_WriteBack,
 	 output reg o_ShowR1
+	 //output reg o_CLK_ID
     );
 	
 	initial
@@ -38,47 +39,50 @@ module InstructionDecoder(
 		o_ALUOp = 4'h0;
 		o_WriteBack = 1'b0;
 		o_ShowR1 = 1'b0;
+		//o_CLK_ID = 1'b1;
 	end
 	
 	always @(i_Instr)
 	begin
+	
+		//o_CLK_ID = ~o_CLK_ID;
 	
 		case(`INSTR_MODE)
 		
 			`MODE_REG:
 			begin
 			
-				o_AddrReg1 <= `R1LOC_REG;
-				o_AddrReg2 <= `R2LOC_REG;
+				o_AddrReg1 = `R1LOC_REG;
+				o_AddrReg2 = `R2LOC_REG;
 				
 				case(`OPCODE_REG)
 					`OPR_ShowR:
-						o_ShowR1 <= 1'b1;
+						o_ShowR1 = 1'b1;
 					
 					default:
-						o_ShowR1 <= 1'b0;
+						o_ShowR1 = 1'b0;
 					
 				endcase
 				
 				case(`OPCODE_REG)
-					`OPR_Add:
-						o_WriteBack <= 1'b1;
+					`OPR_ADD:
+						o_WriteBack = 1'b1;
 					
 					default:
-						o_WriteBack <= 1'b0;
+						o_WriteBack = 1'b0;
 					
 				endcase
 				
 				case(`OPCODE_REG)
 			
 					`OPR_ShowR:
-						o_ALUOp <= `ALUOP_PD1;
+						o_ALUOp = `ALUOP_PD1;
 						
-					`OPR_Add:
-						o_ALUOp <= `ALUOP_ADD;
+					`OPR_ADD:
+						o_ALUOp = `ALUOP_ADD;
 						
 					default:
-						o_ALUOp <= `ALUOP_ZER;
+						o_ALUOp = `ALUOP_PD1;
 				
 				endcase
 						
@@ -89,6 +93,8 @@ module InstructionDecoder(
 			//default:
 		
 		endcase
+		
+		//o_CLK_ID = 1'b1;
 		
 	end
 
