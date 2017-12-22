@@ -55,6 +55,7 @@ module InstructionDecoder(
 				o_AddrReg1 = `R1LOC_REG;
 				o_AddrReg2 = `R2LOC_REG;
 				
+				// ShowR1 control flag
 				case(`OPCODE_REG)
 					`OPR_ShowR:
 						o_ShowR1 = 1'b1;
@@ -64,8 +65,23 @@ module InstructionDecoder(
 					
 				endcase
 				
+				// WriteBack control flag
 				case(`OPCODE_REG)
-					`OPR_ADD:
+				
+					`OPR_ADD,
+					`OPR_AND,
+					`OPR_SUB,
+					`OPR_OR ,
+					`OPR_XOR,
+					`OPR_MOV,
+					`OPR_ADC,
+					`OPR_NOT,
+					`OPR_SAR,
+					`OPR_SLR,
+					`OPR_SAL,
+					`OPR_SLL,
+					`OPR_ROL,
+					`OPR_ROR:
 						o_WriteBack = 1'b1;
 					
 					default:
@@ -73,6 +89,7 @@ module InstructionDecoder(
 					
 				endcase
 				
+				// ALU operation
 				case(`OPCODE_REG)
 			
 					`OPR_ShowR:
@@ -81,6 +98,46 @@ module InstructionDecoder(
 					`OPR_ADD:
 						o_ALUOp = `ALUOP_ADD;
 						
+					`OPR_AND:
+						o_ALUOp = `ALUOP_AND;
+					
+					`OPR_SUB:
+						o_ALUOp = `ALUOP_SUB;
+						
+					`OPR_OR:
+						o_ALUOp = `ALUOP_OR;
+						
+					`OPR_XOR:
+						o_ALUOp = `ALUOP_XOR;
+						
+					`OPR_MOV:
+						o_ALUOp = `ALUOP_PD2;
+						
+					`OPR_ADC:
+						o_ALUOp = `ALUOP_ADC;
+						
+					`OPR_NOT:
+						o_ALUOp = `ALUOP_NOT;
+						
+					`OPR_SAR:
+						o_ALUOp = `ALUOP_SAR;
+						
+					`OPR_SLR:
+						o_ALUOp = `ALUOP_SLR;
+						
+					`OPR_SAL:
+						o_ALUOp = `ALUOP_SAL;
+						
+					`OPR_SLL:
+						o_ALUOp = `ALUOP_SLL;
+						
+					`OPR_ROL:
+						o_ALUOp = `ALUOP_ROL;
+						
+					`OPR_ROR:
+						o_ALUOp = `ALUOP_ROR;
+						
+					
 					default:
 						o_ALUOp = `ALUOP_PD1;
 				

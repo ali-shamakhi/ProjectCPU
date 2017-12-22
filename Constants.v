@@ -12,8 +12,9 @@
 `define ALUOP_PD2 4'h1
 `define ALUOP_ADD 4'h2
 `define ALUOP_SUB 4'h3
-`define ALUOP_MUL 4'h4
-`define ALUOP_DIV 4'h5
+`define ALUOP_ADC 4'h4
+//`define ALUOP_MUL 4'h4
+//`define ALUOP_DIV 4'h5
 `define ALUOP_SAR 4'h6
 `define ALUOP_SLR 4'h7
 `define ALUOP_SAL 4'h8

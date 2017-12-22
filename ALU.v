@@ -21,21 +21,21 @@
 `include "Constants.v"
 
 module ALU(
-	input i_CLK, // action at posedge, flags write-back at negedge
+	input i_CLK, // action at posedge
     input [7:0] i_Data1,
     input [7:0] i_Data2,
     input [3:0] i_ALUOp,
     output reg [7:0] o_Result,
     output reg o_Z,
-	 output reg o_S,
+	output reg o_S,
     output reg o_C,
     output reg o_OF
     );
 	 
-	 reg _Z;
-	 reg _S;
-	 reg _C;
-	 reg _OF;
+	 //reg _Z;
+	 //reg _S;
+	 //reg _C;
+	 //reg _OF;
 	 
 	initial
 	begin
@@ -45,25 +45,22 @@ module ALU(
 		o_C = 1'b0;
 		o_OF = 1'b0;
 		
-		_Z = 1'b0;
-		_S = 1'b0;
-		_C = 1'b0;
-		_OF = 1'b0;
+		//_Z = 1'b0;
+		//_S = 1'b0;
+		//_C = 1'b0;
+		//_OF = 1'b0;
 	end
 
-	always @(negedge i_CLK)
-	begin
-		// write-back flags
-		o_Z = _Z;
-		o_S = _S;
-		o_C = _C;
-		o_OF = _OF;
-	end
-
-	always @(i_Data1 or i_Data2 or i_ALUOp)
-	begin
+	//always @(negedge i_CLK)
+	//begin
+	//	// write-back flags
+	//	o_Z = _Z;
+	//	o_S = _S;
+	//	o_C = _C;
+	//	o_OF = _OF;
+	//end
 		
-		if (i_CLK)
+		always @(posedge i_CLK)
 		begin
 		
 			case(i_ALUOp)
@@ -80,24 +77,128 @@ module ALU(
 				
 				`ALUOP_ADD:
 				begin
-					{_C, o_Result} = i_Data1 + i_Data2;
-					_S = o_Result[7];
-					_OF = (i_Data1[7] == i_Data2[7] ? o_Result[7] != i_Data1[7] : 1'b0);
-					_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+					{o_C, o_Result} = i_Data1 + i_Data2;
+					o_S = o_Result[7];
+					o_OF = (i_Data1[7] == i_Data2[7] ? o_Result[7] != i_Data1[7] : 1'b0);
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
 				end
 			
 				`ALUOP_SUB:
 				begin
-					{_C, o_Result} = i_Data1 - i_Data2;
-					_S = o_Result[7];
-					_OF = (i_Data1[7] != i_Data2[7] ? o_Result[7] != i_Data1[7] : 1'b0);
-					_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+					{o_C, o_Result} = i_Data1 - i_Data2;
+					o_S = o_Result[7];
+					o_OF = (i_Data1[7] != i_Data2[7] ? o_Result[7] != i_Data1[7] : 1'b0);
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
 				end
+				
+				`ALUOP_ADC:
+				begin
+					{o_C, o_Result} = i_Data1 + {7'h00, o_C};
+					o_S = o_Result[7];
+					o_OF = (i_Data1[7] == i_Data2[7] ? o_Result[7] != i_Data1[7] : 1'b0);
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				// check signed or unsigned comparissons
+				`ALUOP_SAR:
+				begin
+					o_Result = i_Data1 >>> i_Data2;
+					if (i_Data2 > 0)
+						o_C = i_Data1[i_Data2 - 1];
+					o_OF = o_Result[7] != i_Data1[7];
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_SLR:
+				begin
+					o_Result = i_Data1 >> i_Data2;
+					if (i_Data2 > 0)
+						o_C = i_Data1[i_Data2 - 1];
+					o_OF = o_Result[7] != i_Data1[7];
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_SAL:
+				begin
+					o_Result = i_Data1 <<< i_Data2;
+					if (i_Data2 > 0)
+						o_C = i_Data1[8 - i_Data2];
+					o_OF = o_Result[7] != i_Data1[7];
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_SLL:
+				begin
+					o_Result = i_Data1 << i_Data2;
+					if (i_Data2 > 0)
+						o_C = i_Data1[8 - i_Data2];
+					o_OF = o_Result[7] != i_Data1[7];
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_ROL:
+				begin
+					if (i_Data2 > 0)
+					begin
+						o_Result = (i_Data1 << i_Data2) | (i_Data1 >> (8 - i_Data2));
+						o_C = i_Data1[8 - i_Data2];
+					end
+					o_OF = o_Result[7] != i_Data1[7];
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);						
+				end
+				
+				`ALUOP_ROR:
+				begin
+					if (i_Data2 > 0)
+					begin
+						o_Result = (i_Data1 >> i_Data2) | (i_Data1 << (8 - i_Data2));
+						o_C = i_Data1[i_Data2 - 1];
+					end
+					o_OF = o_Result[7] != i_Data1[7];
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_AND:
+				begin
+					o_Result = i_Data1 & i_Data2;
+					o_C = 0;
+					o_OF = 0;
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_OR :
+				begin
+					o_Result = i_Data1 | i_Data2;
+					o_C = 0;
+					o_OF = 0;
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_XOR:
+				begin
+					o_Result = i_Data1 ^ i_Data2;
+					o_C = 0;
+					o_OF = 0;
+					o_S = o_Result[7];
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_NOT:
+				begin
+					o_Result = ~i_Data1;
+				end
+
 			
 			endcase
 			
 		end
-		
-	end
 
 endmodule

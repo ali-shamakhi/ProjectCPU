@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    15:42:35 11/08/2017 
+// Create Date:    17:31:26 12/20/2017 
 // Design Name: 
-// Module Name:    PC 
+// Module Name:    ClockDelayer 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,33 +18,30 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module PC(
-    input i_CLK,					// posedge action
-    input i_RESET,				// active low
-    output reg [7:0] o_PC
+module ClockDelayer2HF(
+    input i_CLK,
+    input i_CLK_HF,
+    output reg o_CLK
     );
 	 
-	 //reg [7:0] _next_PC;
+	 //parameter Num_HF_Delay = 2;
+	 //reg [3:0] _N_HFD_count;
+	 
+	 reg _CLK_next2;
+	 reg _CLK_next1;
 	 
 	initial
 	begin
-		o_PC = 8'hFF;
-		//_next_PC = 8'h00;
+		o_CLK = 0;
+		_CLK_next2 = 0;
+		_CLK_next1 = 0;
 	end
 	
-	always @(negedge i_RESET or posedge i_CLK)
+	always @(posedge i_CLK_HF)
 	begin
-	
-		if (i_RESET == 1'b0)
-		begin
-			o_PC = 8'hFF;
-			//_next_PC = 8'h00;
-		end
-		else
-		begin
-			o_PC = o_PC + 8'h01;
-			//_next_PC = _next_PC + 8'h01;
-		end
+		o_CLK = _CLK_next1;
+		_CLK_next1 = _CLK_next2;
+		_CLK_next2 = i_CLK;
 	end
 
 endmodule

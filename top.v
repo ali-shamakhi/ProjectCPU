@@ -155,6 +155,8 @@ assign o_LCDLatch = 1'bz;
     .o_Data(_DB4)
     );
 
+	wire [7:0] _Result;
+	
    LED_Driver _LED_Driver
    (
 		.i_CLK(_CLK_5), 
@@ -181,9 +183,9 @@ assign o_LCDLatch = 1'bz;
     .o_SegLatch(o_SEGLatch)
     );
 	
-	Microcontroller instance_name (
+	Microcontroller _Microcontroller (
     .i_CLK(_PC_INC), 
-    .i_CLK_MEM(i_CLK_5), 
+    .i_CLK_MEM(_CLK_5), 
     .i_RST(_PC_RESET), 
     .o_PC(_PC), 
     .o_INSTR(_INSTR), 
@@ -191,7 +193,8 @@ assign o_LCDLatch = 1'bz;
     .o_S(_S), 
     .o_C(_C), 
     .o_OF(_OF),
-	 .o_ShowR1(_ShowR1)
+	.o_ShowR1(_ShowR1),
+	.o_Result(_Result) 
     );
 
 
