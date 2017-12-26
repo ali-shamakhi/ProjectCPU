@@ -22,6 +22,7 @@
 
 module ALU(
 	input i_CLK, // action at posedge
+	input i_RST,	// active low
     input [7:0] i_Data1,
     input [7:0] i_Data2,
     input [3:0] i_ALUOp,
@@ -60,9 +61,18 @@ module ALU(
 	//	o_OF = _OF;
 	//end
 		
-		always @(posedge i_CLK)
+		always @(negedge i_RST or negedge i_CLK)
 		begin
-		
+			
+			if (i_RST == 1'b0)
+			begin
+				o_Result = 8'h00;
+				o_Z = 1'b0;
+				o_S = 1'b0;
+				o_C = 1'b0;
+				o_OF = 1'b0;
+			end
+			else
 			case(i_ALUOp)
 			
 				`ALUOP_PD1:

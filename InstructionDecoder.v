@@ -28,7 +28,8 @@ module InstructionDecoder(
     output reg [2:0] o_AddrReg2,
     output reg [3:0] o_ALUOp,
 	 output reg o_WriteBack,
-	 output reg o_ShowR1
+	 output reg o_ShowR1,
+	 output reg o_ShowR2
 	 //output reg o_CLK_ID
     );
 	
@@ -39,6 +40,7 @@ module InstructionDecoder(
 		o_ALUOp = 4'h0;
 		o_WriteBack = 1'b0;
 		o_ShowR1 = 1'b0;
+		o_ShowR2 = 1'b0;
 		//o_CLK_ID = 1'b1;
 	end
 	
@@ -57,11 +59,23 @@ module InstructionDecoder(
 				
 				// ShowR1 control flag
 				case(`OPCODE_REG)
-					`OPR_ShowR:
+					`OPR_ShowRR:
+					begin
 						o_ShowR1 = 1'b1;
+						o_ShowR2 = 1'b1;
+					end
+						
+					`OPR_ShowR:
+					begin
+						o_ShowR1 = 1'b1;
+						o_ShowR2 = 1'b0;
+					end
 					
 					default:
+					begin
 						o_ShowR1 = 1'b0;
+						o_ShowR2 = 1'b0;
+					end
 					
 				endcase
 				

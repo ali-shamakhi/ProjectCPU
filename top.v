@@ -155,12 +155,14 @@ assign o_LCDLatch = 1'bz;
     .o_Data(_DB4)
     );
 
-	wire [7:0] _Result;
+	//wire [7:0] _Result;
+	wire [7:0] _RegShowing1;
+	wire [7:0] _RegShowing2;
 	
    LED_Driver _LED_Driver
    (
 		.i_CLK(_CLK_5), 
-		.i_Data16({_Z, _S, _C, _OF, 4'h0, (_ShowR1 ? _Result : 8'h00)}), 
+		.i_Data16({_Z, _S, _C, _OF, 4'h0, (_ShowR1 ? _RegShowing1 : 8'h00)}), 
 		.i_RESET(1'b0), 
 		.o_LEDData(o_LEDData), 
 		.o_LEDLatch(o_LEDLatch)
@@ -194,7 +196,9 @@ assign o_LCDLatch = 1'bz;
     .o_C(_C), 
     .o_OF(_OF),
 	.o_ShowR1(_ShowR1),
-	.o_Result(_Result) 
+	.o_ShowR2(_ShowR2),
+	.o_RegShowing1(_RegShowing1),
+	.o_RegShowing2(_RegShowing2)
     );
 
 

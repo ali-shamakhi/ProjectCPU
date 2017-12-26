@@ -47,5 +47,6 @@
 `define OPR_ROR 9'b000001110
 
 `define OPR_ShowR 9'b000010010
+`define OPR_ShowRR 9'b000010011
 
 `define OPCODE_DAT i_Instr[14 -: 4]

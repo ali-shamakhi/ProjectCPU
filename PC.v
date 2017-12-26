@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module PC(
     input i_CLK,					// posedge action
-    input i_RESET,				// active low
+    input i_RST,				// active low
     output reg [7:0] o_PC
     );
 	 
@@ -32,10 +32,10 @@ module PC(
 		//_next_PC = 8'h00;
 	end
 	
-	always @(negedge i_RESET or posedge i_CLK)
+	always @(negedge i_RST or posedge i_CLK)
 	begin
 	
-		if (i_RESET == 1'b0)
+		if (i_RST == 1'b0)
 		begin
 			o_PC = 8'hFF;
 			//_next_PC = 8'h00;

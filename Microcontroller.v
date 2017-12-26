@@ -29,12 +29,16 @@ module Microcontroller(
 		output o_C,
 		output o_OF,
 		output o_ShowR1,
-		output [7:0] o_Result
+		output o_ShowR2,
+		output [7:0] o_RegShowing1,
+		output [7:0] o_RegShowing2
     );
+	 
+	 wire [7:0] _Result;
 	 
 	 PC _PC_Module (
     .i_CLK(i_CLK),
-    .i_RESET(i_RST), 
+    .i_RST(i_RST), 
     .o_PC(o_PC)
     );
 	 
@@ -44,10 +48,16 @@ module Microcontroller(
 		.douta(o_INSTR) // output [15 : 0] douta
 	 );
 	 
-	 ClockDelayer2HF _ClockDelayer2HF (
+	ClockDelayer2HF _ClockDelayer2HF (
     .i_CLK(i_CLK), 
     .i_CLK_HF(i_CLK_MEM), 
     .o_CLK(_CLK_Delayed2HF)
+    );
+	
+	ClockDelayer2HF _ClockDelayer4HF (
+    .i_CLK(_CLK_Delayed2HF), 
+    .i_CLK_HF(i_CLK_MEM), 
+    .o_CLK(_CLK_Delayed4HF)
     );
 	 
 	 wire [2:0] _AddrReg1;
@@ -60,7 +70,8 @@ module Microcontroller(
     .o_AddrReg2(_AddrReg2), 
     .o_ALUOp(_ALUOp), 
     .o_WriteBack(_WriteBack),
-	.o_ShowR1(o_ShowR1)
+	.o_ShowR1(o_ShowR1),
+	.o_ShowR2(o_ShowR2)
     );
 	 
 	 wire [7:0] _Data1;
@@ -70,19 +81,23 @@ module Microcontroller(
     .i_AddrReg1(_AddrReg1), 
     .i_AddrReg2(_AddrReg2), 
     .i_AddrRegDest(_AddrReg1), 
-    .i_WriteData(o_Result), 
+    .i_WriteData(_Result), 
     .i_WriteBack(_WriteBack),
-    .i_CLK(_CLK_Delayed2HF), 
+    .i_CLK(_CLK_Delayed4HF), 
+	.i_CLK_RO(i_CLK),
     .o_Data1(_Data1), 
-    .o_Data2(_Data2)
+    .o_Data2(_Data2),
+	.o_RegShowing1(o_RegShowing1),
+	.o_RegShowing2(o_RegShowing2)
     );
 	 
 	 ALU _ALU (
 	 .i_CLK(_CLK_Delayed2HF),
+	 .i_RST(i_RST),
     .i_Data1(_Data1), 
     .i_Data2(_Data2), 
     .i_ALUOp(_ALUOp), 
-    .o_Result(o_Result), 
+    .o_Result(_Result), 
     .o_Z(o_Z), 
     .o_S(o_S), 
 	.o_C(o_C),

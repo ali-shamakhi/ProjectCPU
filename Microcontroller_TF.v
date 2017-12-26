@@ -37,6 +37,9 @@ module Microcontroller_TF;
 	wire o_C;
 	wire o_OF;
 	wire o_ShowR1;
+	wire o_ShowR2;
+	wire [7:0] o_RegShowing1;
+	wire [7:0] o_RegShowing2;
 
 	// Instantiate the Unit Under Test (UUT)
 	Microcontroller micro (
@@ -49,10 +52,13 @@ module Microcontroller_TF;
 		.o_S(o_S), 
 		.o_C(o_C), 
 		.o_OF(o_OF), 
-		.o_ShowR1(o_ShowR1)
+		.o_ShowR1(o_ShowR1),
+		.o_ShowR2(o_ShowR2),
+		.o_RegShowing1(o_RegShowing1),
+		.o_RegShowing2(o_RegShowing2)
 	);
 	
-	reg [2:0] _cnt;
+	reg [4:0] _cnt;
 
 	initial begin
 		// Initialize Inputs
@@ -63,7 +69,7 @@ module Microcontroller_TF;
 		_cnt = 0;
 
 		// Wait 100 ns for global reset to finish
-		#20;
+		#2;
 		
 		i_RST = 1;
         
@@ -78,7 +84,7 @@ module Microcontroller_TF;
 		i_CLK_MEM = ~i_CLK_MEM;
 		_cnt = _cnt + 1;
 		
-		if (_cnt == 3'b111)
+		if (_cnt == 5'h1F)
 			i_CLK = ~i_CLK;
 			
 	end
