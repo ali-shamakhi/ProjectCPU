@@ -25,7 +25,7 @@ module ALU(
 	input i_RST,	// active low
     input [7:0] i_Data1,
     input [7:0] i_Data2,
-    input [3:0] i_ALUOp,
+    input [4:0] i_ALUOp,
     output reg [7:0] o_Result,
     output reg o_Z,
 	output reg o_S,
@@ -109,10 +109,26 @@ module ALU(
 					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
 				end
 				
+				`ALUOP_INC:
+				begin
+					{o_C, o_Result} = i_Data1 + 8'h01;
+					o_S = o_Result[7];
+					o_OF = (i_Data1[7] == 0 ? o_Result[7] != i_Data1[7] : 1'b0);
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_DEC:
+				begin
+					{o_C, o_Result} = i_Data1 - 8'h01;
+					o_S = o_Result[7];
+					o_OF = (i_Data1[7] != 0 ? o_Result[7] != i_Data1[7] : 1'b0);
+					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
 				// check signed or unsigned comparissons
 				`ALUOP_SAR:
 				begin
-					o_Result = i_Data1 >>> i_Data2;
+					o_Result = $signed(i_Data1) >>> i_Data2;
 					if (i_Data2 > 0)
 						o_C = i_Data1[i_Data2 - 1];
 					o_OF = o_Result[7] != i_Data1[7];
@@ -132,7 +148,7 @@ module ALU(
 				
 				`ALUOP_SAL:
 				begin
-					o_Result = i_Data1 <<< i_Data2;
+					o_Result = $signed(i_Data1) <<< i_Data2;
 					if (i_Data2 > 0)
 						o_C = i_Data1[8 - i_Data2];
 					o_OF = o_Result[7] != i_Data1[7];

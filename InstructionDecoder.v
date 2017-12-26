@@ -26,8 +26,9 @@ module InstructionDecoder(
     input [15:0] i_Instr,
     output reg [2:0] o_AddrReg1,
     output reg [2:0] o_AddrReg2,
-    output reg [3:0] o_ALUOp,
+    output reg [4:0] o_ALUOp,
 	 output reg o_WriteBack,
+	 output reg o_SEL_IMM3,
 	 output reg o_ShowR1,
 	 output reg o_ShowR2
 	 //output reg o_CLK_ID
@@ -37,7 +38,7 @@ module InstructionDecoder(
 	begin
 		o_AddrReg1 = 3'b000;
 		o_AddrReg2 = 3'b000;
-		o_ALUOp = 4'h0;
+		o_ALUOp = 5'h00;
 		o_WriteBack = 1'b0;
 		o_ShowR1 = 1'b0;
 		o_ShowR2 = 1'b0;
@@ -49,6 +50,8 @@ module InstructionDecoder(
 	
 		//o_CLK_ID = ~o_CLK_ID;
 	
+	
+		// TODO: always check for all flags
 		case(`INSTR_MODE)
 		
 			`MODE_REG:
@@ -95,7 +98,11 @@ module InstructionDecoder(
 					`OPR_SAL,
 					`OPR_SLL,
 					`OPR_ROL,
-					`OPR_ROR:
+					`OPR_ROR,
+					`OPR_INC,
+					`OPR_DEC,
+					`OPR_LI,
+					`OPR_LM:
 						o_WriteBack = 1'b1;
 					
 					default:
@@ -103,11 +110,25 @@ module InstructionDecoder(
 					
 				endcase
 				
+				// SEL_IMM3 control flag
+				case(`OPCODE_REG)
+				
+					`OPR_SAR,
+					`OPR_SLR,
+					`OPR_SAL,
+					`OPR_SLL,
+					`OPR_ROL,
+					`OPR_ROR:
+						o_SEL_IMM3 = 1'b1;
+					
+					default:
+						o_SEL_IMM3 = 1'b0;
+					
+				endcase
+				
 				// ALU operation
 				case(`OPCODE_REG)
 			
-					`OPR_ShowR:
-						o_ALUOp = `ALUOP_PD1;
 						
 					`OPR_ADD:
 						o_ALUOp = `ALUOP_ADD;
@@ -150,10 +171,28 @@ module InstructionDecoder(
 						
 					`OPR_ROR:
 						o_ALUOp = `ALUOP_ROR;
-						
+					
+					`OPR_INC:
+						o_ALUOp = `ALUOP_INC;
+					
+					`OPR_DEC:
+						o_ALUOp = `ALUOP_DEC;
+					
+					`OPR_NOP:
+						o_ALUOp = `ALUOP_NOP;
+					
+					`OPR_ShowR:
+						//o_ALUOp = `ALUOP_PD1;
+						o_ALUOp = `ALUOP_NOP;
+					
+					`OPR_ShowRR:
+						//o_ALUOp = `ALUOP_PDS;
+						o_ALUOp = `ALUOP_NOP;
+					
+					// TODO: other OPs
 					
 					default:
-						o_ALUOp = `ALUOP_PD1;
+						o_ALUOp = `ALUOP_NOP;
 				
 				endcase
 						

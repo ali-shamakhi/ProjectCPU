@@ -8,25 +8,26 @@
 `define RLOC_DAT i_Instr[10 -: 3]
 `define DTADR_DAT i_Instr[7 -: 8]
 
-`define ALUOP_PD1 4'h0
-`define ALUOP_PD2 4'h1
-`define ALUOP_ADD 4'h2
-`define ALUOP_SUB 4'h3
-`define ALUOP_ADC 4'h4
-//`define ALUOP_MUL 4'h4
-//`define ALUOP_DIV 4'h5
-`define ALUOP_SAR 4'h6
-`define ALUOP_SLR 4'h7
-`define ALUOP_SAL 4'h8
-`define ALUOP_ROR 4'h9
-`define ALUOP_ROL 4'hA
-`define ALUOP_SLL 4'hB
-`define ALUOP_AND 4'hC
-`define ALUOP_OR 4'hD
-`define ALUOP_XOR 4'hE
-`define ALUOP_NOT 4'hF
+`define ALUOP_NOP 5'h00
+`define ALUOP_PD1 5'h01
+`define ALUOP_PD2 5'h02
+`define ALUOP_ADD 5'h03
+`define ALUOP_SUB 5'h04
+`define ALUOP_ADC 5'h05
+`define ALUOP_INC 5'h06
+`define ALUOP_DEC 5'h07
+`define ALUOP_SAR 5'h08
+`define ALUOP_SLR 5'h09
+`define ALUOP_SAL 5'h0A
+`define ALUOP_ROR 5'h0B
+`define ALUOP_ROL 5'h0C
+`define ALUOP_SLL 5'h0D
+`define ALUOP_AND 5'h0E
+`define ALUOP_OR 5'h0F
+`define ALUOP_XOR 5'h10
+`define ALUOP_NOT 5'h11
 
-//`define ALUOP_ZER 4'hF
+//`define ALUOP_ZER 5'h0F
 
 `define OPCODE_REG i_Instr[14 -: 9]
 // OPCODE REG
@@ -45,8 +46,26 @@
 `define OPR_SLL 9'b000001100
 `define OPR_ROL 9'b000001101
 `define OPR_ROR 9'b000001110
-
+//--
+`define OPR_INC 9'b000001111
+`define OPR_DEC 9'b000010000
+`define OPR_NOP 9'b000000000
 `define OPR_ShowR 9'b000010010
 `define OPR_ShowRR 9'b000010011
+`define OPR_LoadDipR 9'b000010100
+`define OPR_LoadDipRR 9'b000010101
+`define OPR_CMP 9'b000010110
+
+// OPCODE DAT
+`define OPR_JE 5'b10000
+`define OPR_JB 5'b10001
+`define OPR_JA 5'b10010
+`define OPR_JL 5'b10011
+`define OPR_JG 5'b10100
+`define OPR_JMP 5'b10101
+`define OPR_LI 5'b10110
+`define OPR_LM 5'b10111
+`define OPR_ShowDM 5'b11000
+`define OPR_ShowIM 5'b11001
 
 `define OPCODE_DAT i_Instr[14 -: 4]

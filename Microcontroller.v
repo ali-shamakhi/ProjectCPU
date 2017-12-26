@@ -62,7 +62,7 @@ module Microcontroller(
 	 
 	 wire [2:0] _AddrReg1;
 	 wire [2:0] _AddrReg2;
-	 wire [3:0] _ALUOp;
+	 wire [4:0] _ALUOp;
 	 
 	 InstructionDecoder _InstructionDecoder (
     .i_Instr(o_INSTR), 
@@ -70,6 +70,7 @@ module Microcontroller(
     .o_AddrReg2(_AddrReg2), 
     .o_ALUOp(_ALUOp), 
     .o_WriteBack(_WriteBack),
+	.o_SEL_IMM3(_SEL_IMM3),
 	.o_ShowR1(o_ShowR1),
 	.o_ShowR2(o_ShowR2)
     );
@@ -95,7 +96,7 @@ module Microcontroller(
 	 .i_CLK(_CLK_Delayed2HF),
 	 .i_RST(i_RST),
     .i_Data1(_Data1), 
-    .i_Data2(_Data2), 
+    .i_Data2(_SEL_IMM3 ? {5'b00, _AddrReg2} : _Data2), 
     .i_ALUOp(_ALUOp), 
     .o_Result(_Result), 
     .o_Z(o_Z), 
