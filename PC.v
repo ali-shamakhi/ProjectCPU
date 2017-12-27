@@ -21,6 +21,8 @@
 module PC(
     input i_CLK,					// posedge action
     input i_RST,				// active low
+	input i_SEL_JMP,
+	input [7:0] i_JMP_ADDR,
     output reg [7:0] o_PC
     );
 	 
@@ -42,7 +44,10 @@ module PC(
 		end
 		else
 		begin
-			o_PC = o_PC + 8'h01;
+			if (i_SEL_JMP)
+				o_PC = i_JMP_ADDR;
+			else
+				o_PC = o_PC + 8'h01;
 			//_next_PC = _next_PC + 8'h01;
 		end
 	end

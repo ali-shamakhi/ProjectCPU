@@ -26,6 +26,8 @@
 `define ALUOP_OR 5'h0F
 `define ALUOP_XOR 5'h10
 `define ALUOP_NOT 5'h11
+`define ALUOP_CMP 5'h12
+`define ALUOP_PDS 5'h13
 
 //`define ALUOP_ZER 5'h0F
 
@@ -56,16 +58,16 @@
 `define OPR_LoadDipRR 9'b000010101
 `define OPR_CMP 9'b000010110
 
-// OPCODE DAT
-`define OPR_JE 5'b10000
-`define OPR_JB 5'b10001
-`define OPR_JA 5'b10010
-`define OPR_JL 5'b10011
-`define OPR_JG 5'b10100
-`define OPR_JMP 5'b10101
-`define OPR_LI 5'b10110
-`define OPR_LM 5'b10111
-`define OPR_ShowDM 5'b11000
-`define OPR_ShowIM 5'b11001
-
 `define OPCODE_DAT i_Instr[14 -: 4]
+// OPCODE DAT
+`define OPR_JE 4'b0000
+`define OPR_JB 4'b0001
+`define OPR_JA 4'b0010
+`define OPR_JL 4'b0011
+`define OPR_JG 4'b0100
+`define OPR_JMP 4'b0101
+`define OPR_LI 4'b0110
+`define OPR_LM 4'b0111
+`define OPR_ShowDM 4'b1000
+`define OPR_ShowIM 4'b1001
+

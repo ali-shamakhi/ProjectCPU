@@ -24,8 +24,15 @@ module RegisterBank(
     input [2:0] i_AddrReg1,
     input [2:0] i_AddrReg2,
     input [2:0] i_AddrRegDest,
+	input [2:0] i_AddrRegDest2,
 	 input [7:0] i_WriteData,
+	 input [7:0] i_WriteData2,
+	 input [7:0] i_IMM8_DAT,
+	 input [7:0] i_IMM8_DAT2,
+	 input i_SEL_IMM8_DAT,
+	 input i_SEL_IMM8_DAT2,
     input i_WriteBack,
+	input i_WriteBack2,
 	 //input i_CLK_ID,
     output reg [7:0] o_Data1,
     output reg [7:0] o_Data2,
@@ -43,6 +50,11 @@ module RegisterBank(
 	reg [2:0] _AddrRegDest_D1;
 	//reg [7:0] _WriteData_D1;	// invalid
 	
+	reg _WriteBack2_D1;
+	reg [2:0] _AddrRegDest2_D1;
+	//reg [7:0] _WriteData2_D1;	// invalid
+	
+	
 	initial
 	begin
 		_R[0] = 8'h00;
@@ -56,7 +68,9 @@ module RegisterBank(
 		o_Data1 = 8'h00;
 		o_Data2 = 8'h00;
 		_WriteBack_D1 = 0;
+		_WriteBack2_D1 = 0;
 		_AddrRegDest_D1 = 3'h0;
+		_AddrRegDest2_D1 = 3'h0;
 		//_WriteData_D1 = 8'h00;	// invalid
 		//_init = 1;
 		//o_DataReady = 1'b1;
@@ -70,13 +84,27 @@ module RegisterBank(
 			_WriteBack_D1 = i_WriteBack;
 			_AddrRegDest_D1 = i_AddrRegDest;
 			//_WriteData_D1 = i_WriteData;	// invalid
+			
+			if (_WriteBack2_D1)
+				_R[_AddrRegDest2_D1] = i_WriteData2;
+				
+			_WriteBack2_D1 = i_WriteBack2;
+			_AddrRegDest2_D1 = i_AddrRegDest2;
+			//_WriteData2_D1 = i_WriteData2;	// invalid
 		
 	end
 	
 	always @(negedge i_CLK_RO)
 	begin
-		o_Data1 = _R[i_AddrReg1];
-		o_Data2 = _R[i_AddrReg2];
+		if (i_SEL_IMM8_DAT)
+			o_Data1 = i_IMM8_DAT;
+		else
+			o_Data1 = _R[i_AddrReg1];
+			
+		if (i_SEL_IMM8_DAT2)
+			o_Data2 = i_IMM8_DAT2;
+		else
+			o_Data2 = _R[i_AddrReg2];
 	end
 	
 	/*

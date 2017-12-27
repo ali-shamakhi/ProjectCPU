@@ -27,6 +27,7 @@ module ALU(
     input [7:0] i_Data2,
     input [4:0] i_ALUOp,
     output reg [7:0] o_Result,
+    output reg [7:0] o_Result2,
     output reg o_Z,
 	output reg o_S,
     output reg o_C,
@@ -41,6 +42,7 @@ module ALU(
 	initial
 	begin
 		o_Result = 8'h00;
+		o_Result2 = 8'h00;
 		o_Z = 1'b0;
 		o_S = 1'b0;
 		o_C = 1'b0;
@@ -67,6 +69,7 @@ module ALU(
 			if (i_RST == 1'b0)
 			begin
 				o_Result = 8'h00;
+				o_Result2 = 8'h00;
 				o_Z = 1'b0;
 				o_S = 1'b0;
 				o_C = 1'b0;
@@ -83,6 +86,12 @@ module ALU(
 				`ALUOP_PD2:
 				begin
 					o_Result = i_Data2;
+				end
+				
+				`ALUOP_PDS:
+				begin
+					o_Result = i_Data1;
+					o_Result2 = i_Data2;
 				end
 				
 				`ALUOP_ADD:

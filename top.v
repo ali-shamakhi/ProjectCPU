@@ -189,6 +189,7 @@ assign o_LCDLatch = 1'bz;
     .i_CLK(_PC_INC), 
     .i_CLK_MEM(_CLK_5), 
     .i_RST(_PC_RESET), 
+	.i_DIP_DATA(_DIP16),
     .o_PC(_PC), 
     .o_INSTR(_INSTR), 
     .o_Z(_Z), 

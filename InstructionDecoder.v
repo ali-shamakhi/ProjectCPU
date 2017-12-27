@@ -24,11 +24,22 @@
 
 module InstructionDecoder(
     input [15:0] i_Instr,
+	input i_Z,
+	input i_S,
+	input i_C,
+	input i_OF,
+	input [15:0] i_DIP_DATA,
     output reg [2:0] o_AddrReg1,
     output reg [2:0] o_AddrReg2,
+	output reg [7:0] o_IMM8,
+	output reg [7:0] o_IMM8_2,
     output reg [4:0] o_ALUOp,
 	 output reg o_WriteBack,
+	 output reg o_WriteBack2,
 	 output reg o_SEL_IMM3,
+	 output reg o_SEL_JMP,
+	 output reg o_SEL_IMM8_DAT,
+	 output reg o_SEL_IMM8_DAT2,
 	 output reg o_ShowR1,
 	 output reg o_ShowR2
 	 //output reg o_CLK_ID
@@ -38,8 +49,15 @@ module InstructionDecoder(
 	begin
 		o_AddrReg1 = 3'b000;
 		o_AddrReg2 = 3'b000;
+		o_IMM8 = 8'h00;
+		o_IMM8_2 = 8'h00;
 		o_ALUOp = 5'h00;
 		o_WriteBack = 1'b0;
+		o_WriteBack2 = 1'b0;
+		o_SEL_IMM3 = 1'b0;
+		o_SEL_JMP = 1'b0;
+		o_SEL_IMM8_DAT = 1'b0;
+		o_SEL_IMM8_DAT2 = 1'b0;
 		o_ShowR1 = 1'b0;
 		o_ShowR2 = 1'b0;
 		//o_CLK_ID = 1'b1;
@@ -50,7 +68,6 @@ module InstructionDecoder(
 	
 		//o_CLK_ID = ~o_CLK_ID;
 	
-	
 		// TODO: always check for all flags
 		case(`INSTR_MODE)
 		
@@ -60,7 +77,32 @@ module InstructionDecoder(
 				o_AddrReg1 = `R1LOC_REG;
 				o_AddrReg2 = `R2LOC_REG;
 				
-				// ShowR1 control flag
+				// _SEL_IMM8_DAT
+				case(`OPCODE_REG)
+					`OPR_LoadDipR:
+					begin
+						o_SEL_IMM8_DAT = 1'b1;
+						o_SEL_IMM8_DAT2 = 1'b0;
+					end
+						
+					`OPR_LoadDipRR:
+					begin
+						o_SEL_IMM8_DAT = 1'b1;
+						o_SEL_IMM8_DAT2 = 1'b1;
+					end
+						
+					default:
+					begin
+						o_SEL_IMM8_DAT = 1'b0;
+						o_SEL_IMM8_DAT2 = 1'b0;
+					end
+						
+				endcase
+				
+				// JMP control flag
+				o_SEL_JMP = 1'b0;
+				
+				// ShowR control flag
 				case(`OPCODE_REG)
 					`OPR_ShowRR:
 					begin
@@ -101,12 +143,23 @@ module InstructionDecoder(
 					`OPR_ROR,
 					`OPR_INC,
 					`OPR_DEC,
-					`OPR_LI,
-					`OPR_LM:
+					`OPR_LoadDipR:
+					begin
 						o_WriteBack = 1'b1;
+						o_WriteBack2 = 1'b0;
+					end
+						
+					`OPR_LoadDipRR:
+					begin
+						o_WriteBack = 1'b1;
+						o_WriteBack2 = 1'b1;
+					end
 					
 					default:
+					begin
 						o_WriteBack = 1'b0;
+						o_WriteBack2 = 1'b0;
+					end
 					
 				endcase
 				
@@ -128,7 +181,6 @@ module InstructionDecoder(
 				
 				// ALU operation
 				case(`OPCODE_REG)
-			
 						
 					`OPR_ADD:
 						o_ALUOp = `ALUOP_ADD;
@@ -189,7 +241,21 @@ module InstructionDecoder(
 						//o_ALUOp = `ALUOP_PDS;
 						o_ALUOp = `ALUOP_NOP;
 					
-					// TODO: other OPs
+					`OPR_LoadDipR:
+					begin
+						o_IMM8 = i_DIP_DATA[7 -: 8];
+						o_ALUOp = `ALUOP_PD1;
+					end
+					
+					`OPR_LoadDipRR:
+					begin
+						o_IMM8 = i_DIP_DATA[15 -: 8];
+						o_IMM8_2 = i_DIP_DATA[7 -: 8];
+						o_ALUOp = `ALUOP_PDS;
+					end
+					
+					`OPR_CMP:
+						o_ALUOp = `ALUOP_CMP;
 					
 					default:
 						o_ALUOp = `ALUOP_NOP;
@@ -198,13 +264,77 @@ module InstructionDecoder(
 						
 			end
 		
-			//MODE_DAT:
-
-			//default:
+			`MODE_DAT:
+			begin
+				
+				o_AddrReg1 = `RLOC_DAT;
+				o_IMM8 = `DTADR_DAT;
+				
+				o_SEL_IMM8_DAT = 1'b1;
+				
+				// ShowR control flag
+				o_ShowR1 = 1'b0;
+				o_ShowR2 = 1'b0;
+				
+				// SEL_IMM3 control flag
+				o_SEL_IMM3 = 1'b0;
+				
+				// WriteBack control flag
+				o_WriteBack2 = 1'b0;
+				case(`OPCODE_DAT)
+				
+					`OPR_LI,
+					`OPR_LM:
+						o_WriteBack = 1'b1;
+					
+					default:
+						o_WriteBack = 1'b0;
+					
+				endcase
+				
+				// ALU operation
+				case(`OPCODE_DAT)
+				
+					`OPR_LI,
+					`OPR_LM:
+						o_ALUOp = `ALUOP_PD1;
+						
+					default:
+						o_ALUOp = `ALUOP_NOP;
+				
+				endcase
+				
+				// JMP control flag
+				case(`OPCODE_DAT)
+				
+					`OPR_JE:
+						o_SEL_JMP = i_Z;
+					
+					`OPR_JB:
+						o_SEL_JMP = i_C;
+					
+					`OPR_JA:
+						o_SEL_JMP = (~i_C) & (~i_Z);
+					
+					`OPR_JL:
+						o_SEL_JMP = (i_S ^ i_OF);
+					
+					`OPR_JG:
+						o_SEL_JMP = (~(i_S ^ i_OF)) & (~i_Z);
+						
+					`OPR_JMP:
+						o_SEL_JMP = 1'b1;
+					
+					default:
+						o_SEL_JMP = 1'B0;	
 		
-		endcase
+				endcase
+				
+			end
 		
 		//o_CLK_ID = 1'b1;
+		
+		endcase
 		
 	end
 
