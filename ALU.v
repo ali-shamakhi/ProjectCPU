@@ -34,6 +34,8 @@ module ALU(
     output reg o_OF
     );
 	 
+	 reg [7:0] _temp;
+	 
 	 //reg _Z;
 	 //reg _S;
 	 //reg _C;
@@ -47,6 +49,8 @@ module ALU(
 		o_S = 1'b0;
 		o_C = 1'b0;
 		o_OF = 1'b0;
+		
+		_temp = 8'h00;
 		
 		//_Z = 1'b0;
 		//_S = 1'b0;
@@ -224,6 +228,14 @@ module ALU(
 					o_OF = 0;
 					o_S = o_Result[7];
 					o_Z = (o_Result == 8'h00 ? 1'b1 : 1'b0);
+				end
+				
+				`ALUOP_CMP:
+				begin
+					{o_C, _temp} = i_Data1 - i_Data2;
+					o_S = _temp[7];
+					o_OF = (i_Data1[7] != i_Data2[7] ? _temp[7] != i_Data1[7] : 1'b0);
+					o_Z = (_temp == 8'h00 ? 1'b1 : 1'b0);
 				end
 				
 				`ALUOP_NOT:

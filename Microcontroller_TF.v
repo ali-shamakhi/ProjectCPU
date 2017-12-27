@@ -46,7 +46,7 @@ module Microcontroller_TF;
 		.i_CLK(i_CLK), 
 		.i_CLK_MEM(i_CLK_MEM), 
 		.i_RST(i_RST), 
-		.i_DIP_DATA(16'h0FE5A),
+		.i_DIP_DATA(16'h0105),
 		.o_PC(o_PC), 
 		.o_INSTR(o_INSTR), 
 		.o_Z(o_Z), 
